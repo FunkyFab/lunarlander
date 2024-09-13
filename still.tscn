@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk1loxmae7uj3"]
+
+[ext_resource type="Texture2D" uid="uid://twoqdk6wl5i3" path="res://resources/Lunar Lander.png" id="1_tna8f"]
+
+[node name="still" type="Sprite2D"]
+scale = Vector2(3, 3)
+texture = ExtResource("1_tna8f")
+region_enabled = true
+region_rect = Rect2(0, 56, 20, 23)

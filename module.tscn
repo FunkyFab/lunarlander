@@ -1,0 +1,96 @@
+[gd_scene load_steps=16 format=3 uid="uid://djhoiwl3oelld"]
+
+[ext_resource type="Texture2D" uid="uid://twoqdk6wl5i3" path="res://resources/Lunar Lander.png" id="1_iqmgu"]
+[ext_resource type="Script" path="res://module.gd" id="1_twmib"]
+[ext_resource type="PackedScene" uid="uid://dk1loxmae7uj3" path="res://still.tscn" id="2_6nudb"]
+[ext_resource type="AudioStream" uid="uid://guyj8crn7tgf" path="res://resources/eagleLanded.mp3" id="5_uadnt"]
+[ext_resource type="AudioStream" uid="uid://cf2vsy6mepftr" path="res://resources/houstonProblem.mp3" id="6_g6mf7"]
+[ext_resource type="AudioStream" uid="uid://dpd3c74sr2gel" path="res://resources/oneSmallStep.mp3" id="6_uca61"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e57ee"]
+size = Vector2(6.1e+06, 6.2e+06)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w20kt"]
+streams_count = 2
+stream_0/stream = ExtResource("5_uadnt")
+stream_1/stream = ExtResource("6_uca61")
+
+[sub_resource type="Gradient" id="Gradient_tfnfk"]
+offsets = PackedFloat32Array(0, 0.279642, 1)
+colors = PackedColorArray(0.960784, 0.556863, 0, 1, 0.690196, 0.4, 0.372549, 0.913725, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mrg64"]
+gradient = SubResource("Gradient_tfnfk")
+
+[sub_resource type="Curve" id="Curve_0oqyr"]
+min_value = -1.0
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_3odmp"]
+curve = SubResource("Curve_0oqyr")
+
+[sub_resource type="Curve" id="Curve_5ov7p"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_si4aq"]
+curve = SubResource("Curve_5ov7p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3xuph"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 32.0
+spread = 180.0
+initial_velocity_min = 80.0
+initial_velocity_max = 250.0
+gravity = Vector3(0, 40, 40)
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_si4aq")
+color = Color(1, 0.639216, 0.231373, 1)
+color_ramp = SubResource("GradientTexture1D_mrg64")
+hue_variation_min = -0.2
+hue_variation_max = 0.2
+hue_variation_curve = SubResource("CurveTexture_3odmp")
+
+[node name="module" type="CharacterBody2D"]
+texture_filter = 1
+texture_repeat = 1
+script = ExtResource("1_twmib")
+
+[node name="still" parent="." instance=ExtResource("2_6nudb")]
+
+[node name="flame" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(3, 3)
+texture = ExtResource("1_iqmgu")
+offset = Vector2(0, 1)
+region_enabled = true
+region_rect = Rect2(20, 56, 20, 25)
+
+[node name="astronaut" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(50, 14)
+scale = Vector2(3, 3)
+texture = ExtResource("1_iqmgu")
+offset = Vector2(0, 1)
+region_enabled = true
+region_rect = Rect2(112, 2, 12, 9)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.499999, -1)
+scale = Vector2(1e-05, 1e-05)
+shape = SubResource("RectangleShape2D_e57ee")
+
+[node name="landingAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_w20kt")
+
+[node name="crashingAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_g6mf7")
+
+[node name="SpriteExplosion" type="GPUParticles2D" parent="."]
+amount = 50000
+process_material = SubResource("ParticleProcessMaterial_3xuph")
+lifetime = 5.0
+explosiveness = 0.9
+randomness = 0.2

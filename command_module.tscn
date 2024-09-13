@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://p8a0rw07v8ru"]
+
+[ext_resource type="Texture2D" uid="uid://twoqdk6wl5i3" path="res://resources/Lunar Lander.png" id="1_uvitg"]
+[ext_resource type="Script" path="res://command_module.gd" id="2_sixy3"]
+
+[node name="command_module" type="Sprite2D"]
+texture_filter = 1
+position = Vector2(1300, 80)
+rotation = -1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("1_uvitg")
+region_enabled = true
+region_rect = Rect2(41, 19, 18, 38)
+script = ExtResource("2_sixy3")

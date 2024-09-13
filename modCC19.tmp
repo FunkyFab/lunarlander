@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://djhoiwl3oelld"]
+
+[ext_resource type="Texture2D" uid="uid://twoqdk6wl5i3" path="res://resources/Lunar Lander.png" id="1_iqmgu"]
+[ext_resource type="Script" path="res://module.gd" id="1_twmib"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e57ee"]
+size = Vector2(6.1e+06, 6.2e+06)
+
+[node name="module" type="CharacterBody2D"]
+script = ExtResource("1_twmib")
+
+[node name="still" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_iqmgu")
+region_enabled = true
+region_rect = Rect2(0, 56, 20, 23)
+
+[node name="flame" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(3, 3)
+texture = ExtResource("1_iqmgu")
+offset = Vector2(0, 1)
+region_enabled = true
+region_rect = Rect2(20, 56, 20, 25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.499999, -1)
+scale = Vector2(1e-05, 1e-05)
+shape = SubResource("RectangleShape2D_e57ee")

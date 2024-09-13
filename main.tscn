@@ -1,0 +1,230 @@
+[gd_scene load_steps=21 format=3 uid="uid://b70jf03eqcj0r"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_muwwl"]
+[ext_resource type="PackedScene" uid="uid://djhoiwl3oelld" path="res://module.tscn" id="1_yfuy6"]
+[ext_resource type="Texture2D" uid="uid://ddpuglj8g5m8e" path="res://background.jpg" id="2_bj7xt"]
+[ext_resource type="PackedScene" uid="uid://p8a0rw07v8ru" path="res://command_module.tscn" id="4_nieyj"]
+[ext_resource type="Texture2D" uid="uid://b1ho1j7iyfgs2" path="res://resources/Rock030_1K-JPG_Color.jpg" id="5_2lns3"]
+[ext_resource type="Texture2D" uid="uid://bojnc6ouwltou" path="res://resources/target.png" id="6_ps8tw"]
+[ext_resource type="AudioStream" uid="uid://b03lumfuhq62o" path="res://resources/sample1.mp3" id="7_4lte0"]
+[ext_resource type="Material" uid="uid://61g7cnbgum8o" path="res://black_to_white.tres" id="7_x6kf0"]
+[ext_resource type="AudioStream" uid="uid://dqcx87h5vf12j" path="res://resources/sample2.mp3" id="8_fwnww"]
+[ext_resource type="Texture2D" uid="uid://b43m0avvxmjya" path="res://resources/rotate-left.png" id="8_vthxb"]
+[ext_resource type="AudioStream" uid="uid://dr8u0fclbbshp" path="res://resources/sample3.mp3" id="9_07ld4"]
+[ext_resource type="Texture2D" uid="uid://tnxoqlnju51" path="res://resources/rotate-right.png" id="9_d7snq"]
+[ext_resource type="Texture2D" uid="uid://3vaqfyjpiw2g" path="res://resources/fire.png" id="10_3na2l"]
+[ext_resource type="AudioStream" uid="uid://07yldqk1sohx" path="res://resources/sample4.mp3" id="10_w3qqx"]
+[ext_resource type="AudioStream" uid="uid://cmu5g1e0y8j7t" path="res://resources/sample5.mp3" id="11_mx7tr"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5653n"]
+size = Vector3(1200, 50, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7axs"]
+size = Vector2(1417, 49.5)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_y4kuh"]
+playback_mode = 1
+streams_count = 5
+stream_0/stream = ExtResource("7_4lte0")
+stream_1/stream = ExtResource("8_fwnww")
+stream_2/stream = ExtResource("9_07ld4")
+stream_2/weight = 3.0
+stream_3/stream = ExtResource("10_w3qqx")
+stream_4/stream = ExtResource("11_mx7tr")
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_o4h0e"]
+a = Vector2(1176, 648)
+b = Vector2(1176, -100)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_wcdum"]
+a = Vector2(-24, 648)
+b = Vector2(-24, -100)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_muwwl")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1159.0
+offset_bottom = 670.0
+texture = ExtResource("2_bj7xt")
+
+[node name="command_module" parent="." instance=ExtResource("4_nieyj")]
+
+[node name="module" parent="." instance=ExtResource("1_yfuy6")]
+position = Vector2(636, 52)
+
+[node name="Sol" type="StaticBody2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(2, 12)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Sol"]
+texture_filter = 1
+position = Vector2(583, 619)
+mesh = SubResource("BoxMesh_5653n")
+texture = ExtResource("5_2lns3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sol"]
+position = Vector2(565.5, 618.75)
+shape = SubResource("RectangleShape2D_v7axs")
+
+[node name="Target" type="Node2D" parent="."]
+position = Vector2(40, 545)
+
+[node name="Sprite2D" type="Sprite2D" parent="Target"]
+position = Vector2(-11, 51)
+texture = ExtResource("6_ps8tw")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 10.0
+offset_bottom = 10.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+text = "Speed X: 10
+Speed Y: 10
+Altitude: 10
+Tilt: 0
+Fuel: 10"
+vertical_alignment = 1
+
+[node name="Autopilot_Tilt_Check" type="CheckButton" parent="UI/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Auto Tilt"
+
+[node name="Autopilot_Ignition_Check" type="CheckButton" parent="UI/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "Auto Ignition"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="LeftIcon" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer"]
+visible = false
+material = ExtResource("7_x6kf0")
+layout_mode = 2
+texture = ExtResource("8_vthxb")
+expand_mode = 2
+
+[node name="RightIcon" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer"]
+visible = false
+material = ExtResource("7_x6kf0")
+layout_mode = 2
+texture = ExtResource("9_d7snq")
+expand_mode = 3
+
+[node name="IgnitionIcon" type="TextureRect" parent="UI/VBoxContainer/HBoxContainer"]
+visible = false
+material = ExtResource("7_x6kf0")
+layout_mode = 2
+texture = ExtResource("10_3na2l")
+expand_mode = 3
+
+[node name="Restart_Button" type="Button" parent="UI/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Start Again"
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 187.0
+offset_right = 1130.0
+offset_bottom = 485.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Show_Help_Button" type="Button" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -44.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "Help"
+
+[node name="Help_Label" type="RichTextLabel" parent="UI/Control"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -198.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[font_size=20]Lunar Landing [/font_size]
+[font_size=16]The target of this game is to land the module on the ground as close to the target as possible, with minimal tilt angle, vertical speed and horizontal speed.
+You can ignite/stop the engine, and tilt the module left and right, but you have a limited amount of fuel.
+
+When you have a keyboard, [b]A[/b] is for ignition, and the [b]left[/b] and [b]right[/b] arrows for tilting.
+
+When you have no keyboard, pressing the [b]bottom left side[/b] of the screen will tilt the module [b]counterclockwise[/b] (and light the corresponding icon), the [b]bottom center[/b] of the screen will tilt the module [b]clockwise[/b] (and light the corresponding icon), the [b]bottom right size[/b] of the screen will [b]ignite[/b] the engine (and light the correponding icon) and stop it when you stop pressing.
+
+The left side of the screen displays the horizontal speed (which must be strictly under 5 at landing) , the vertical speed (which must be strictly under 30 at landing), the altitude, the tilat angle (which must be strictly under 15), the remaining fuel (which can be 0 at landing). It also shows some controls to enable/disable the autopilot.
+
+The different sounds come from the actual sounds of Apollo 11 and 13 missions.
+
+[/font_size]"
+fit_content = true
+
+[node name="Hide_Help_Button" type="Button" parent="UI/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -31.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "OK"
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_y4kuh")
+
+[node name="SoundTimer" type="Timer" parent="."]
+wait_time = 15.0
+autostart = true
+
+[node name="Borders" type="Node" parent="."]
+
+[node name="BorderRight" type="Area2D" parent="Borders"]
+
+[node name="BorderRight" type="CollisionShape2D" parent="Borders/BorderRight"]
+shape = SubResource("SegmentShape2D_o4h0e")
+
+[node name="BorderLeft" type="CollisionShape2D" parent="Borders/BorderRight"]
+shape = SubResource("SegmentShape2D_wcdum")
+
+[connection signal="game_ended" from="module" to="." method="_on_module_game_ended"]
+[connection signal="toggled" from="UI/VBoxContainer/Autopilot_Tilt_Check" to="module" method="_on_autopilot_tilt_check_toggled"]
+[connection signal="toggled" from="UI/VBoxContainer/Autopilot_Ignition_Check" to="module" method="_on_autopilot_ignition_check_toggled"]
+[connection signal="pressed" from="UI/VBoxContainer/Restart_Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UI/Control/Show_Help_Button" to="." method="_on_show_help_button_pressed"]
+[connection signal="pressed" from="UI/Control/Hide_Help_Button" to="." method="_on_hide_help_button_pressed"]
+[connection signal="timeout" from="SoundTimer" to="." method="_on_sound_timer_timeout"]
+[connection signal="body_entered" from="Borders/BorderRight" to="." method="_on_borders_body_entered"]
